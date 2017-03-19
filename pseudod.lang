@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	PseudoD syntax highlight for GtkSourceView 3.0
+-->
+<language id="pseudod" _name="PseudoD" version="2.0" _section="Sources">
+  <metadata>
+  	<property name="mimetypes">text/x-pdsrc</property>
+    <property name="globs">*.pd;*.pseudo;*.ps;*.psd</property>
+    <property name="block-comment-start">[</property>
+    <property name="block-comment-end">]</property>
+  </metadata>
+  
+	<styles>
+    <style id="comment" _name="Comment" map-to="def:comment"/>
+    <style id="error" _name="Error" map-to="def:error"/>
+    <style id="string" _name="String" map-to="def:string"/>
+    <style id="keyword" _name="Keyword" map-to="def:keyword"/>
+    <style id="type" _name="Data Type" map-to="def:type"/>
+    <style id="boolean" _name="Boolean" map-to="def:boolean"/>
+    <style id="decimal" _name="Decimal number" map-to="def:decimal"/>
+    <style id="type2" _name="Name Types" map-to="def:identifier"/>
+    <style id="comentarios" _name="Notes" map-to="def:note"/>
+    <style id="operators" _name="Operators" map-to="def:operator"/>
+  </styles>
+  
+  <definitions>
+  
+  	<context id="notas" style-ref="comentarios">
+			<match extended="true">
+				\b(TODO|NOTE|XXX|FIXME|NOTA|ERROR|ADVERTENCIA)\b
+			</match>
+		</context>
+		
+		<context id="block-comment" style-ref="comment" class="comment" class-disabled="no-spell-check">
+		  <start>\[</start>
+		  <end>\]</end>
+		  <include>
+		    <context ref="def:in-comment"/>
+		    <context ref="notas"/>
+		  </include>
+		</context>
+
+		<context id="close-comment-outside-comment" style-ref="error" class-disabled="no-spell-check">
+		  <match>\[(?!\])</match>
+		</context>
+		
+		<context id="keywords" style-ref="keyword" class-disabled="no-spell-check">
+			<match extended="true">
+				\b(hereda(r)?|extiende|implementa|redireccionar|\¿son_iguales\?|funcion|clase|estructura|ejecutar|escribir|escribir_esp|incrementar_p|incrementar_puntero|decrementar_p|decrementar_puntero|leer|sistema|empujar|sacar|enviar_parametro|recibir_parametro|recibir_resultado|devolver|usar_pila|finclase|si|si(_)?no|necesitas|fin(bucle|fun)?|contiene|mientras|nl|crear_pila|comparar_i|sal(ir)?|finargs|Importar\.[a-zA-Z0-9\._\,\(\)]+)\b
+			</match>
+		</context>
+		
+		<context id="function-calls" style-ref="keyword" class-disabled="no-spell-check">
+			<match extended="true">
+				\b(llamar|\#\(Final\)\.)\b
+			</match>
+		</context>
+		
+		<context id="import" style-ref="keyword" class-disabled="no-spell-check">
+			<match extended="true">
+				\b(utilizar)\b(.+)\b
+			</match>
+		</context>
+		
+		<context id="memory" style-ref="keyword" class-disabled="no-spell-check">
+			<match extended="true">
+				\b(fijar|oper|operador)\b
+			</match>
+		</context>
+		
+		<context id="operators" style-ref="operators" class-disabled="no-spell-check">
+			<match extended="true">
+				\b(a|\=((¿)?\?|\*)|tanto|como|algun|o|e|de|con|comparar|es|no|son|sean|iguales|diferentes|y)\b
+			</match>
+		</context>
+		
+		<context id="types" style-ref="type" class-disabled="no-spell-check">
+			<match extended="true">
+				\b(adquirir|liberar|instancia|puntero|atributo|metodo|abstracta)\b
+			</match>
+		</context>
+		
+		<context id="objects" style-ref="type2" class-disabled="no-spell-check">
+			<match extended="true">
+				\b(NULO|CMMERROR|SI|NO|CERO|UNO|UNON|DOS|TRES|CINCO|VG_BUFFER(_DATOS)?(_DATA)?|\#|PSEUDOD|__(ARCH|LIB|MAIN)__|BEPD)\b
+			</match>
+		</context>
+		
+		<context id="booleans" style-ref="boolean" class-disabled="no-spell-check">
+			<match extended="true">
+				\b(VERDADERO|FALSO)\b
+			</match>
+		</context>
+		
+		<context id="decimals" style-ref="decimal" class-disabled="no-spell-check">
+			<match extended="true">
+				\b[0-9]+\b
+			</match>
+		</context>
+		
+		<context id="strings" style-ref="string" class-disabled="no-spell-check">
+			<match extended="true">
+				(\=\*.+$)
+			</match>
+		</context>
+
+		<context id="strmuli" style-ref="string" class-disabled="no-spell-check">
+		  <start>\{</start>
+		  <end>\}</end>
+		</context>
+
+		<context id="strmuli2" style-ref="string" class-disabled="no-spell-check">
+		  <start>«</start>
+		  <end>»</end>
+		</context>
+		
+		<context id="const" style-ref="decimal" class-disabled="no-spell-check">
+			<match extended="true">
+				(\b[A-Z\_\.\+\-\?]+\b)
+			</match>
+		</context>
+
+		<context id="resolved" style-ref="decimal" class-disabled="no-spell-check">
+			<match extended="true">
+				(\&lt;[^ \r\n\t\&gt;]*\&gt;)
+			</match>
+		</context>
+		
+		<context id="pseudod" class="no-spell-check">
+		  <include>
+		    <context ref="def:shebang"/>
+		    <context ref="block-comment"/>
+		    <context ref="close-comment-outside-comment"/>
+		    <context ref="keywords"/>
+		    <context ref="types"/>
+		    <context ref="operators"/>
+		    <context ref="memory"/>
+		    <context ref="function-calls"/>
+		    <context ref="import"/>
+		    <context ref="booleans"/>
+		    <context ref="decimals"/>
+		    <context ref="strings"/>
+		    <context ref="strmuli"/>
+		    <context ref="strmuli2"/>
+		    <context ref="const"/>
+		    <context ref="objects"/>
+		    <context ref="resolved"/>
+		  </include>
+		</context>
+  
+  </definitions>
+  
+</language>
+
